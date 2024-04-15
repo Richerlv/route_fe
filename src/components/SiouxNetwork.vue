@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div style="width: 800px; height: 800px;">
+        <div style="width: 800px; height: 600px;">
             <RelationGraph ref="graphRef" :options="graphOptions" :on-node-click="onNodeClick"
                 :on-line-click="onLineClick" />
         </div>

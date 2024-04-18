@@ -18,10 +18,10 @@
             <el-input v-model="formInline.time_budget" placeholder="time_budget" clearable />
           </el-form-item> -->
           <el-form-item>
-            <el-button type="primary" @click="segac">Segac Query</el-button>
+            <el-button type="primary" @click="showSegacDialog">Segac Query</el-button>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="ctd">Ctd Query</el-button>
+            <el-button plain @click="showCtdDialog">Ctd Query</el-button>
           </el-form-item>
         </el-form>
         <h3>推荐路线</h3>
@@ -47,14 +47,15 @@
   import { reactive } from 'vue'
   import axios from 'axios'
   import { ref } from 'vue'
-  import SiouxNetwork from '@/components/SiouxNetwork.vue';
+  import SiouxNetwork from '@/components/SiouxNetwork.vue'
+  import { ElMessage, ElMessageBox } from 'element-plus'
 
   const activities = ref([])
   
   const formInline = reactive({
     start: '',
     end: '',
-    time_budget: 40
+    time: 40
   })
   
   const segac = async () => {
@@ -74,9 +75,46 @@
     }
   }
 
-  const ctd = async () => {
-    alert('功能待开发')
+  const ctd = async (value) => {
+    alert(`功能待开发，ζ = ${value}`)
   }
+
+const showSegacDialog = () => {
+  ElMessageBox.prompt('Please input your time budget', 'SEGAC', {
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancel',
+    inputPattern: /^([1-9]\d*(\.\d+)?|1(\.0+)?)$/,
+    inputErrorMessage: 'time budget should be more than 0',
+  })
+    .then(({ value }) => {
+      formInline.time = value
+      segac();
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: 'Input canceled',
+      })
+    })
+} 
+
+const showCtdDialog = () => {
+  ElMessageBox.prompt('Please input your ζ', 'CTD', {
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancel',
+    inputPattern: /^(0(\.\d+)?|1(\.0+)?)$/,
+    inputErrorMessage: 'ζ should be less than 1 and more than 0',
+  })
+    .then(({ value }) => {
+      ctd(value);
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: 'Input canceled',
+      })
+    })
+}
   </script>
   
   <style>

@@ -55,14 +55,15 @@
   const formInline = reactive({
     start: '',
     end: '',
-    time: 40
+    time: 40,
+    zeta: 0.5
   })
   
   const segac = async () => {
     try {
       // 发送POST请求
       const response = await axios.post('http://127.0.0.1:8888/gpg', formInline)
-      console.log('POST请求成功:', response.data)
+      console.log('segac POST请求成功:', response.data)
   
       // 更新 activities 数组
       activities.value = response.data.map(item => ({
@@ -75,8 +76,21 @@
     }
   }
 
-  const ctd = async (value) => {
-    alert(`功能待开发，ζ = ${value}`)
+  const ctd = async () => {
+    try {
+      // 发送POST请求
+      const response = await axios.post('http://127.0.0.1:8888/ctd', formInline)
+      console.log('ctd POST请求成功:', response.data)
+  
+      // 更新 activities 数组
+      activities.value = response.data.map(item => ({
+        content: item.toString(),
+        color: '#0bbd87'
+      }))
+      console.log('ctd activities:', activities)
+    } catch (error) {
+      console.error('ctd POST请求失败:', error)
+    }
   }
 
 const showSegacDialog = () => {
@@ -106,7 +120,8 @@ const showCtdDialog = () => {
     inputErrorMessage: 'ζ should be less than 1 and more than 0',
   })
     .then(({ value }) => {
-      ctd(value);
+      formInline.zeta = value
+      ctd();
     })
     .catch(() => {
       ElMessage({

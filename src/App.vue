@@ -13,7 +13,8 @@ import axios from 'axios'
 export default {
   name: 'App',
   created() {
-    this.$router.push({ path: '/mapView' });
+    this.$router.push({ path: '/loginView' });
+    // this.$router.push({ path: '/mapView' });
   },
   data() {
     return {

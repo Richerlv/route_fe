@@ -1,6 +1,7 @@
 <template>
     <div class="loginContainer">
       <div class="loginForm">
+        <h1>Welcome Route!</h1>
         <el-form 
           :label-position="labelPosition"
           label-width="auto" 
